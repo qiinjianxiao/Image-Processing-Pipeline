@@ -1,0 +1,9 @@
+function reCFA=CFAtoRGB_pre_Inv(img,TMOP)
+pattern=TMOP.pattern;
+% max_dem=TMOP.max_dem;
+% min_dem=TMOP.min_dem;
+% img=img*max_dem+(1-img)*min_dem;
+img=img*255;
+cfa=Downsampling(img,pattern);
+[De,TMOP]=TMO_fore_Inv(cfa,TMOP);
+reCFA=WL_WB_Inv(De,TMOP);

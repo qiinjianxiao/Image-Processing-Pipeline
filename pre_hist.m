@@ -1,0 +1,11 @@
+x = t;
+[m,n]=size(cfaImage);
+numOfBins = 10;
+[histFreq, histXout] = hist(x, numOfBins);
+figure;
+bar(histXout, histFreq/sum(m*n)*100);
+xlabel('Error-Ratio','FontSize',14,'FontName','Time New Roman');
+ylabel('Frequency (percent)','FontSize',14,'FontName','Time New Roman');
+set(gca,'FontSize',14,'FontName','Time New Roman');
+Hist_save_name='F:\photo\test\figure\five\error_pre.png';
+print(gcf,'-dpng',Hist_save_name);

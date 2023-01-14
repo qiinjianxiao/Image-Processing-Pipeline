@@ -1,0 +1,46 @@
+% clear all;
+% close all;
+path='F:\photo\test\figure\eight';
+name='color_borad';
+FullName=fullfile(path,[name,'.png']);
+Img=imread(FullName);
+[h,w,~]=size(Img);
+% Img=Img(300-40:h-1000+460,1200-50:w-1200+190,:);
+Img=Img(301:h-1000,1201:w-1200,:);
+Img_save=fullfile(path,'two',[name,'.png']);
+imwrite(Img,Img_save);
+Img=double(Img)/65535;
+
+figure;imshow(Img);
+pattern='RGGB';
+% CFA=Downsampling(Img,pattern);
+CFA=Img;
+RGGB=Down_Sampling(CFA,pattern);
+[h,w,~]=size(RGGB);
+[m,n]=size(CFA);
+reCFA=zeros(m,n);
+reCFA(1:h,1:w)=RGGB(:,:,1);
+reCFA(h+1:end,1:w)=RGGB(:,:,2);
+reCFA(1:h,w+1:end)=RGGB(:,:,3);
+reCFA(h+1:end,w+1:end)=RGGB(:,:,4);
+Img_save=fullfile(path,'two',[name,'_Re.png']);
+imwrite(uint16(reCFA*65535),Img_save);
+figure;imshow(reCFA);
+wb=0;wr=0;
+cfa=Star_Tetrix_Transform(CFA,wb,wr)+1;
+[R,GH,GL,B]=subDownSampling(cfa,pattern,flag);
+
+reCFA(1:h,1:w)=GH;
+reCFA(h+1:end,1:w)=GL;
+reCFA(1:h,w+1:end)=B;
+reCFA(h+1:end,w+1:end)=R;
+reCFA=(reCFA-min(reCFA(:)))/(max(reCFA(:))-min(reCFA(:)));
+Img_save=fullfile(path,'two',[name,'_Star.png']);
+imwrite(uint16(reCFA*65535),Img_save);
+figure;imshow(reCFA);
+
+reCFA=Tran97(CFA)+1;
+reCFA=(reCFA-min(reCFA(:)))/(max(reCFA(:))-min(reCFA(:)));
+figure;imshow(reCFA);
+Img_save=fullfile(path,'two',[name,'_Tran95.png']);
+imwrite(uint16(reCFA*65535),Img_save);
